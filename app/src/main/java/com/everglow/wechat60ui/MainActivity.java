@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.everglow.wechat60ui.fragment.ContactFragment;
 import com.everglow.wechat60ui.fragment.TabFragment;
 import com.everglow.wechat60ui.widget.ChangeColorIcon;
 
@@ -88,8 +89,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initDatas() {
 
-        for (String s : mTitles) {
-            TabFragment fragment = new TabFragment();
+        for (int i =0;i< mTitles.length;i++) {
+            String s = mTitles[i];
+            Fragment fragment;
+            if (i==1) {
+                fragment  = new ContactFragment();
+            }else{
+                fragment  = new TabFragment();
+            }
+           
             Bundle bundle = new Bundle();
             bundle.putString("mTitle", s);
             fragment.setArguments(bundle);
