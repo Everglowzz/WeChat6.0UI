@@ -9,6 +9,8 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -133,5 +135,39 @@ public class ChangeColorIcon extends View {
         mPaint.setAlpha(255);
         mCanvas.drawBitmap(mIcon, null, mIconRect, mPaint);
 
+    }
+
+    /**
+     *内存不足被异常回收数据保存和恢复
+     *  --------------------------------------------------------------------------------------------------------
+     * */
+    private static final String INSTANCE_STATUS = "instance_status";
+    private static final String STATUS_ALPHA = "status_alpha";
+
+
+    @Nullable
+    @Override
+    protected Parcelable onSaveInstanceState() {
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(INSTANCE_STATUS,super.onSaveInstanceState());
+        bundle.putFloat(STATUS_ALPHA,mAlpha);
+        return bundle;
+    }
+
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+
+        if (state instanceof Bundle) {
+            Bundle bundle = (Bundle) state;
+            Parcelable parcelable = bundle.getParcelable(INSTANCE_STATUS);
+            super.onRestoreInstanceState(parcelable);
+            float aDouble = bundle.getFloat(STATUS_ALPHA);
+            mAlpha = aDouble;
+            return;
+        }
+        
+        super.onRestoreInstanceState(state);
     }
 }
